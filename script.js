@@ -1,7 +1,7 @@
-﻿function MiroCreateShape(boardId, text, x, y, width, height, fontSize, textAlign, textAlignVertical) {
+﻿function MiroCreateShape(boardId, text, x, y, width, height, fontSize, textAlign, textAlignVertical, shape, done) {
     Log("Creating shape in Miro");
     const options = {
-        data: { content: text, shape: "hexagon" },
+        data: { content: text, shape: shape },
         position: { origin: "center", x: x, y: y },
         geometry: { height: height, width: width },
         style: {
@@ -9,7 +9,8 @@
             textAlign: textAlign,
             textAlignVertical: textAlignVertical,
             fillColor: "#00b9f0",
-            borderColor: "#1a1a1a"
+            fillOpacity: "0.6",
+            borderColor: "#555555"
 
         }
     };
@@ -18,7 +19,7 @@
         type: "POST",
         url: "https://api.miro.com/v2/boards/" + boardId + "/shapes",
         data: JSON.stringify(options),
-        async: false,
+        //async: false,
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -26,10 +27,11 @@
         }
     }).done(function (data) {
         Log("Success: Shapre created (" + text + ")");
+        if(done != null) done(data);
     });
 }
 
-function MiroCreateBoard(googleData) {
+function MiroCreateBoard(done) {
     Log("Creating empty Miro board");
     const options = {
         name: 'Untitled TLDM',
@@ -59,15 +61,13 @@ function MiroCreateBoard(googleData) {
         }
     }).done(function (data) {
         Log("Success: Miro board creatred <a target='_blank' href='https://miro.com/app/board/" + data.id + "'>https://miro.com/app/board/" + data.id + "</a>");
-        InitTLDMHex(domain => domain.Level == 0, googleData.values, data.id, MiroCreateShape);
+        if(done != null) done(data);        
     });
 }
 
-function GoogleGetData() {
+function GoogleGetData(spreadsheetId, valueRange, done) {
     Log("Loading data from Google");
     var apiKey = "AIzaSyDHAS8PUtvMEdUVfkZIpxFFnI5thGn4WwQ";
-    var spreadsheetId = "1xKq60LGeDQe6X7hdmJ9tYT92tAYJ4Go3EZrEZp7zr74";
-    var valueRange = "'Domains V1.3'!A5:K421";
 
     $.ajax({
         type: "GET",
@@ -79,15 +79,6 @@ function GoogleGetData() {
         }
     }).done(function (data) {
         Log("Success: Data obtained from Google Spreadsheet");
-        MiroCreateBoard(data);
+        if(done != null) done(data);        
     });
 }
-
-function CreateBoard() {
-    GoogleGetData();
-}
-
-
-$(function () {
-    $("#createButton").click(CreateBoard);
-});

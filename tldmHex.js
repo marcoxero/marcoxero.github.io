@@ -11,7 +11,7 @@
     return getParentValue(data, data[id].ParentID, column);
 }
 
-function parseData(rawData) {
+function ParseDataTLDM(rawData) {
     const data = {};
     var lastDomain = {};
 
@@ -50,7 +50,9 @@ function parseData(rawData) {
                 lastDomain.Label = lastDomain.BusinessArea;
             }
 
-            data[lastDomain.UID] = lastDomain;
+            if(!isNaN(lastDomain.UID)){
+                data[lastDomain.UID] = lastDomain;
+            }
         }
     };
 
@@ -92,32 +94,31 @@ function InitTLDMHexChildren(data, boardId, parentID, parentX, parentY, miroCrea
 
     var childCount = 0;
     for (childDomainId in data) {
-        var childDomain = data[childDomainId]
+        const childDomain = data[childDomainId]
         if (childDomain.UID != parentID && childDomain.ParentID == parentID) {
             childDomain.X = positionMatrix[childCount].x + parentX - 260;
             childDomain.Y = positionMatrix[childCount].y + parentY - 80;
-            childDomain.Shape = miroCreateShape(boardId, childDomain.Label, childDomain.X, childDomain.Y, 160, 140, 16, 'center', 'middle');
+            childDomain.Shape = miroCreateShape(boardId, childDomain.Label, childDomain.X, childDomain.Y, 160, 140, 16, 'center', 'middle', "hexagon");
             childCount++;
         }
     };
 }
 
 function InitTLDMHex(filter, rawData, boardId, miroCreateShape) {
-    var data = parseData(rawData);
+    var data = ParseDataTLDM(rawData);
     var x = 0;
     var y = 0;
     var count = 0;
     for (domainId in data) {
-        var domain = data[domainId];
+        const domain = data[domainId];
         if (filter(domain)) {
-            //alert(JSON.stringify(domain));
-
-            domain.Shape = miroCreateShape(boardId, domain.Label, x, y, 800, 700, 40, 'center', 'top');
             domain.X = x;
             domain.Y = y;
             count++;
+            domain.Shape = miroCreateShape(boardId, domain.Label, domain.X, domain.Y, 800, 700, 40, 'center', 'top', "hexagon", function (parentData){
+                InitTLDMHexChildren(data, boardId, domain.UID, domain.X, domain.Y, miroCreateShape);
+            });
 
-            InitTLDMHexChildren(data, boardId, domain.UID, x, y, miroCreateShape);
             
             x += 640;
             y += y == 0 || y == 760 ? 380 : -380;
@@ -129,3 +130,15 @@ function InitTLDMHex(filter, rawData, boardId, miroCreateShape) {
         }
     };
 }
+
+function CreateBoardTLDM() {
+    GoogleGetData("1xKq60LGeDQe6X7hdmJ9tYT92tAYJ4Go3EZrEZp7zr74", "'Domains V1.3'!A5:K421", function(data) {
+        MiroCreateBoard(function(miroData) {
+            InitTLDMHex(domain => domain.Level == 0, data.values, miroData.id, MiroCreateShape);
+        });
+    });
+}
+
+$(function () {
+    $("#createButtonTLDM").click(CreateBoardTLDM);
+});
