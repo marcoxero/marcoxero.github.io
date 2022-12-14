@@ -98,7 +98,7 @@ function InitTLDMHexChildren(data, boardId, parentID, parentX, parentY, miroCrea
         if (childDomain.UID != parentID && childDomain.ParentID == parentID) {
             childDomain.X = positionMatrix[childCount].x + parentX - 260;
             childDomain.Y = positionMatrix[childCount].y + parentY - 80;
-            childDomain.Shape = miroCreateShape(boardId, childDomain.Label, childDomain.X, childDomain.Y, 160, 140, 16, 'center', 'middle', "hexagon");
+            childDomain.Shape = miroCreateShape(boardId, childDomain.Label, childDomain.X, childDomain.Y, 160, 140, 16, 'center', 'middle', "hexagon", "0.6", "#00b9f0");
             childCount++;
         }
     };
@@ -115,7 +115,7 @@ function InitTLDMHex(filter, rawData, boardId, miroCreateShape) {
             domain.X = x;
             domain.Y = y;
             count++;
-            domain.Shape = miroCreateShape(boardId, domain.Label, domain.X, domain.Y, 800, 700, 40, 'center', 'top', "hexagon", function (parentData){
+            domain.Shape = miroCreateShape(boardId, domain.Label, domain.X, domain.Y, 800, 700, 40, 'center', 'top', "hexagon", "#00b9f0", "0.6", function (parentData){
                 InitTLDMHexChildren(data, boardId, domain.UID, domain.X, domain.Y, miroCreateShape);
             });
 
@@ -133,7 +133,7 @@ function InitTLDMHex(filter, rawData, boardId, miroCreateShape) {
 
 function CreateBoardTLDM() {
     GoogleGetData("1xKq60LGeDQe6X7hdmJ9tYT92tAYJ4Go3EZrEZp7zr74", "'Domains V1.3'!A5:K421", function(data) {
-        MiroCreateBoard(function(miroData) {
+        MiroCreateBoard("Xero TLDM", function(miroData) {
             InitTLDMHex(domain => domain.Level == 0, data.values, miroData.id, MiroCreateShape);
         });
     });
