@@ -98,7 +98,7 @@ function InitTLDMHexChildren(data, boardId, parentID, parentX, parentY, miroCrea
         if (childDomain.UID != parentID && childDomain.ParentID == parentID) {
             childDomain.X = positionMatrix[childCount].x + parentX - 260;
             childDomain.Y = positionMatrix[childCount].y + parentY - 80;
-            childDomain.Shape = miroCreateShape(boardId, childDomain.Label, childDomain.X, childDomain.Y, 160, 140, 16, 'center', 'middle', "hexagon", "0.6", "#00b9f0");
+            childDomain.Shape = miroCreateShape(boardId, childDomain.Label, childDomain.X, childDomain.Y, 160, 140, 16, 'center', 'middle', "hexagon", "#00b9f0", "0.6");
             childCount++;
         }
     };
