@@ -132,6 +132,7 @@ function InitTLDMHex(filter, rawData, boardId, miroCreateShape) {
 }
 
 function CreateBoardTLDM() {
+    Log("CLEAR");
     GoogleGetData("1xKq60LGeDQe6X7hdmJ9tYT92tAYJ4Go3EZrEZp7zr74", "'Domains V1.3'!A5:K421", function(data) {
         MiroCreateBoard("Xero TLDM", function(miroData) {
             InitTLDMHex(domain => domain.Level == 0, data.values, miroData.id, MiroCreateShape);

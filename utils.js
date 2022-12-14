@@ -7,11 +7,29 @@ const redirectUri = document.location.protocol + "//" + document.location.host;
 
 function Log(text) {
     console.log(text);
-    $("#log").html($("#log").html() + "<br/>" + text);
+    if(text == "CLEAR"){
+        $("#log").html("");
+    }else{
+        $("#log").html($("#log").html() + "<br/>" + text);
+    }
+
 }
 
 var googleAccessToken = JSON.parse(sessionStorage.getItem("googleAccessToken"));
 var miroAccessToken = JSON.parse(sessionStorage.getItem("miroAccessToken"));
+
+function Ajax(description, parameters, done, retries){
+    $.ajax(parameters)
+    .done(function (data) {
+        Log(description);
+        if(done != null) done(data);
+    })
+    .fail(function(err){
+        Log("Retry(" + (retries == null ? 3 : retries) + "): " + description);
+        if(retries != 0)
+            Ajax(description, parameters, done, (retries == null ? 3 : --retries));
+    });
+}
 
 function Post(description, parameters, done, retries){
     fetch(parameters.url, {
@@ -21,7 +39,7 @@ function Post(description, parameters, done, retries){
         cache: 'no-cache'
     }).then((response) => {
         if(!response.ok){
-            Log("Retry(" + (retries == null ? 3 : retries) + "): " + description);
+            Log("Retry(" + (retries == null ? 4 : retries) + "): " + description);
             if(retries != 0)
                 Post(description, parameters, done, (retries == null ? 3 : --retries));
         }
@@ -44,16 +62,17 @@ function MiroAuth(force) {
     if (authCode == null) {
         Log("Authentication: Redirecting to Miro authentication page");
         document.location = "https://miro.com/oauth/authorize?response_type=code&client_id=" + escape(clientId) + "&scope=" + escape(scope) + "&redirect_uri=" + escape(redirectUri);
+        return;
     }
 
-    Post(
+    Ajax(
         "Authentication: Token obtained by Miro", 
         {
             type: "POST",
             //url: "https://api.miro.com/v1/oauth/token?grant_type=authorization_code&code=" + escape(authCode) + "&redirect_uri=" + escape(redirectUri) + "&client_id=" + escape(clientId) + "&client_secret=" + escape(clientSecret),
-            url: "https://try.readme.io/https://api.miro.com/v1/oauth/token?grant_type=authorization_code&code=" + escape(authCode) + "&redirect_uri=" + escape(redirectUri) + "&client_id=" + escape(clientId) + "&client_secret=" + escape(clientSecret),
-            zzheaders: {
-                "Accept": "text/plain",
+            url: "https://eoaixlwhc5.execute-api.us-east-1.amazonaws.com/Prod/miro/oauth?code=" + escape(authCode) + "&redirect_uri=" + escape(redirectUri) + "&client_id=" + escape(clientId) + "&client_secret=" + escape(clientSecret),
+            headers: {
+                "Accept": "application/json",
                 "Content-Type": "application/json"
             }
         },
@@ -89,6 +108,7 @@ function GoogleAuth(force) {
     if (authCode == null) {
         Log("Authentication: Redirecting to Google authentication page");
         document.location = "https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=" + escape(clientId) + "&scope=" + escape(scope) + "&redirect_uri=" + escape(redirectUri);
+        return;
     }
 
     Post(

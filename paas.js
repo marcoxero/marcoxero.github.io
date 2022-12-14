@@ -111,6 +111,7 @@ function InitPaaS(filter, rawData, boardId, miroCreateShape) {
 }
 
 function CreateBoardPaaS() {
+    Log("CLEAR");
     GoogleGetData("1ZiYs6laIf8PVxkJCuqMwVEQyMNmRRkInVFm6lm2iv4Q", "'tech-2022-11-04T09:19:26.943801'!A1:T300", function(data) {
         MiroCreateBoard("Xero PaaS", function(miroData) {
             InitPaaS(domain => domain.Level == 0, data.values, miroData.id, MiroCreateShape);
