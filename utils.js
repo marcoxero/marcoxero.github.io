@@ -20,7 +20,7 @@ function Ajax(description, parameters, done, retries){
         if(done != null) done(data);
     })
     .fail(function(err){
-        Log("Retry: " + (retries == null ? 3 : retries));
+        Log("Retry(" + (retries == null ? 3 : retries) + "): " + description);
         if(retries != 0)
             Ajax(description, parameters, done, (retries == null ? 3 : --retries));
     });
