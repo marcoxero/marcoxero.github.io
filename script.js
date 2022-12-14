@@ -15,7 +15,7 @@
         }
     };
 
-    Ajax(
+    Post(
         "Success: Shapre created (" + text + ")",
         {
             type: "POST",
@@ -51,7 +51,7 @@ function MiroCreateBoard(boardName, done) {
         }
     };
 
-    Ajax(
+    Post(
         "",
         {
             type: "POST",
@@ -74,7 +74,7 @@ function GoogleGetData(spreadsheetId, valueRange, done) {
     Log("Loading data from Google");
     var apiKey = "AIzaSyDHAS8PUtvMEdUVfkZIpxFFnI5thGn4WwQ";
 
-    Ajax(
+    Post(
         "Success: Data obtained from Google Spreadsheet",
         {
             type: "GET",
