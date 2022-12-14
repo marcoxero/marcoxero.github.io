@@ -47,6 +47,10 @@ function GoogleAuth(force) {
         {
             type: "POST",
             url: "https://oauth2.googleapis.com/token",
+            headers: {
+                "Accept": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
             data: "grant_type=authorization_code&code=" + escape(authCode) + "&redirect_uri=" + escape(redirectUri) + "&client_id=" + escape(clientId) + "&client_secret=" + escape(clientSecret),
             contentType: "application/x-www-form-urlencoded"
         }, 
@@ -90,7 +94,8 @@ function MiroAuth(force) {
             type: "POST",
             url: "https://try.readme.io/https://api.miro.com/v1/oauth/token?grant_type=authorization_code&code=" + escape(authCode) + "&redirect_uri=" + escape(redirectUri) + "&client_id=" + escape(clientId) + "&client_secret=" + escape(clientSecret),
             headers: {
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Access-Control-Allow-Origin": "*"
             }
         },
         function (data) {
