@@ -65,7 +65,7 @@ function InitPaaS(filter, rawData, boardId, miroCreateShape) {
         domain.width = Object.keys(domain.children).length * 120;
         x += domain.width + 30;
 
-        miroCreateShape(boardId, domain.name, domain.x + domain.width/2, domain.y, 100, 70, 10, "center", "middle", "hexagon", "#E6E6E6", "1.0", function (domainData){            
+        miroCreateShape(boardId, null, domain.name, domain.x + domain.width/2, domain.y, 100, 70, "hexagon", { fillColor: "#E6E6E6" }, function (domainData){            
             var x = domain.x + 60;
             var y = domain.y + 110;     
             var capabilityGroupsKeys = Object.keys(domain.children).sort();
@@ -77,7 +77,7 @@ function InitPaaS(filter, rawData, boardId, miroCreateShape) {
                 capabilityGroup.width = 120;
                 x += capabilityGroup.width + 10;
         
-                miroCreateShape(boardId, capabilityGroup.name, capabilityGroup.x, capabilityGroup.y, 110, 100, 10, "center", "middle", "rectangle", "#0CA789", "1.0", function (domainData){
+                miroCreateShape(boardId, null, capabilityGroup.name, capabilityGroup.x, capabilityGroup.y, 110, 100, "rectangle", { fillColor: "#0CA789" }, function (domainData){
                     var x = capabilityGroup.x;
                     var y = capabilityGroup.y + 80;
                     var capabilitysKeys = Object.keys(capabilityGroup.children).sort();
@@ -90,7 +90,7 @@ function InitPaaS(filter, rawData, boardId, miroCreateShape) {
                         capability.height = capability.children.length * 110 + 50;
                         y += capability.height + 10;
                 
-                        miroCreateShape(boardId, capability.name, capability.x, capability.y + capability.height/2, capability.width, capability.height, 10, "center", "top", "rectangle", "#CEE741", "1.0", function (domainData){
+                        miroCreateShape(boardId, null, capability.name, capability.x, capability.y + capability.height/2, capability.width, capability.height, "rectangle", { fillColor: "#CEE741", textAlignVertical: "top" }, function (domainData){
                             var x = capability.x;
                             var y = capability.y + 50;
 
@@ -100,7 +100,7 @@ function InitPaaS(filter, rawData, boardId, miroCreateShape) {
                                 item.y = y;                            
                                 y += 110;
                         
-                                miroCreateShape(boardId, item.name, item.x, item.y + 50, 100, 100, 10, "center", "middle", "rectangle", "#FAC710", "1.0", null);
+                                miroCreateShape(boardId, item.name, item.x, item.y + 50, 100, 100, "rectangle", { fillColor: "#FAC710" });
                             }                        
                         });
                     }

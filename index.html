@@ -7,14 +7,16 @@
     <link href="style.css" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="utils.js" type="text/javascript"></script>
-    <script src="script.js" type="text/javascript"></script>
-    <script src="tldmHex.js" type="text/javascript"></script>
-    <script src="paas.js" type="text/javascript"></script>
+    <script src="scripts/utils.js" type="text/javascript"></script>
+    <script src="scripts/script.js" type="text/javascript"></script>
+    <script src="scripts/tldmHex.js" type="text/javascript"></script>
+    <script src="scripts/paas.js" type="text/javascript"></script>
+    <script src="scripts/customerJourney.js" type="text/javascript"></script>
+    <script src="scripts/hubdocDependencies.js" type="text/javascript"></script>
 </head>
 <body>
     <div class="main-block">
-        <h1>Order Form</h1>
+        <h1>Miro Board Creator</h1>
         <div class="form">
             <div class="info">
                 <input class="fname" type="text" name="name" placeholder="Miro board name">
@@ -41,6 +43,8 @@
             </div>
             <button id="createButtonTLDM" hclass="button">Create TLDM</button>
             <button id="createButtonPaaS" hclass="button">Create PaaS</button>
+            <button id="createButtonCustomerJourney" hclass="button">Create Customer Journey</button>
+            <button id="createButtonHubdocDependencies" hclass="button">Create Hubdoc Dependencies</button>
             <div id="log" />
         </div>
     </div>

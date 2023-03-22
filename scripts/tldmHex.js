@@ -98,7 +98,7 @@ function InitTLDMHexChildren(data, boardId, parentID, parentX, parentY, miroCrea
         if (childDomain.UID != parentID && childDomain.ParentID == parentID) {
             childDomain.X = positionMatrix[childCount].x + parentX - 260;
             childDomain.Y = positionMatrix[childCount].y + parentY - 80;
-            childDomain.Shape = miroCreateShape(boardId, childDomain.Label, childDomain.X, childDomain.Y, 160, 140, 16, 'center', 'middle', "hexagon", "#00b9f0", "0.6");
+            childDomain.Shape = miroCreateShape(boardId, null, childDomain.Label, childDomain.X, childDomain.Y, 160, 140, "hexagon", { fontSize: 16, fillColor: "#00b9f0", fillOpacity: "0.6" });
             childCount++;
         }
     };
@@ -115,7 +115,7 @@ function InitTLDMHex(filter, rawData, boardId, miroCreateShape) {
             domain.X = x;
             domain.Y = y;
             count++;
-            domain.Shape = miroCreateShape(boardId, domain.Label, domain.X, domain.Y, 800, 700, 40, 'center', 'top', "hexagon", "#00b9f0", "0.6", function (parentData){
+            domain.Shape = miroCreateShape(boardId, null, domain.Label, domain.X, domain.Y, 800, 700, "hexagon", { fontSize: 40, textAlignVertical: "top", fillColor: "#00b9f0", fillOpacity: "0.6" }, function (parentData){
                 InitTLDMHexChildren(data, boardId, domain.UID, domain.X, domain.Y, miroCreateShape);
             });
 
